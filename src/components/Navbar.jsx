@@ -1,11 +1,13 @@
 import { Badge } from "@material-ui/core";
-import { Search, ShoppingCartOutlined } from "@material-ui/icons";
+import { HomeOutlined, ShoppingCartOutlined } from "@material-ui/icons";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { authenticaiton } from "../firebase-config";
 import { mobile } from "../responsive";
 import { UserContext } from "../App"
+import {Link } from "react-router-dom";
+
 
 const Container = styled.div`
   height: 60px;
@@ -104,11 +106,11 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Left>
-          <Language>EN</Language>
-          <SearchContainer>
-            <Input placeholder="Search" />
-            <Search style={{ color: "gray", fontSize: 16 }} />
-          </SearchContainer>
+        <MenuItem>         
+              <Link style={{textDecoration: "none", color:"black"}} to="/">
+                  <HomeOutlined/>
+            </Link>
+          </MenuItem>
         </Left>
         <Center>
           <Logo>CLOUD KITCHEN BD.</Logo>
@@ -127,13 +129,17 @@ const Navbar = () => {
           {
             loggedInUser.isSignedIn? 
             <MenuItem onClick={signOut} >SIGN OUT</MenuItem>
-            :<MenuItem onClick={signInWithGoogle}>GOOGLE SIGN IN</MenuItem>
+            :<MenuItem onClick={signInWithGoogle}>
+              GOOGLE SIGN IN
+            </MenuItem>
           }
           
-          <MenuItem>
-            <Badge badgeContent={4} color="primary">
-              <ShoppingCartOutlined />
-            </Badge>
+          <MenuItem>         
+              <Link style={{textDecoration: "none", color:"black"}} to="/cart">
+                <Badge badgeContent={4} color="primary">
+                  <ShoppingCartOutlined/>
+                </Badge>
+            </Link>
           </MenuItem>
         </Right>
       </Wrapper>

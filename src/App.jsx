@@ -11,21 +11,25 @@ import { Routes, Route, Link } from "react-router-dom";
 export const UserContext = createContext();
 
 const App = () => {
+
   const [loggedInUser, setLoggedInUser] = useState({
     name: null,
     email: null, 
     photoURL: null,
     isSignedIn: false
     });
+  const [orders,setOrders] = useState({})
+
+
+
   return(
-    <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
+    <UserContext.Provider value={{ loginState: [loggedInUser, setLoggedInUser], orderState : [orders, setOrders]}}>
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="cart" element={<Cart />} />
-        <Route path="productlist" element={<ProductList />} />
+        <Route path="productlist" element={<ProductList/>} />
         <Route path="product" element={<Product />} />
-      </Routes>
-      
+      </Routes>      
     </UserContext.Provider>
 
   ); 

@@ -75,8 +75,11 @@ const MenuItem = styled.div`
 
 
 const Navbar = () => {
-
-  const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+  
+  const {loginState} = useContext(UserContext);
+  const [loggedInUser, setLoggedInUser] = loginState;
+  const {orderState} = useContext(UserContext);
+  const [orders, setOrders] = orderState;
 
   const signInWithGoogle=()=>{
     const provider = new GoogleAuthProvider();
@@ -136,7 +139,7 @@ const Navbar = () => {
           
           <MenuItem>         
               <Link style={{textDecoration: "none", color:"black"}} to="/cart">
-                <Badge badgeContent={4} color="primary">
+                <Badge badgeContent={orders.count} color="primary">
                   <ShoppingCartOutlined/>
                 </Badge>
             </Link>

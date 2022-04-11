@@ -1,5 +1,5 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@material-ui/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { sliderItems } from "../data";
 import { mobile } from "../responsive";
@@ -50,7 +50,7 @@ const Slide = styled.div`
 `;
 
 const ImgContainer = styled.div`
-  height: 100%;
+  height: 80%;
   flex: 1;
 `;
 
@@ -83,13 +83,23 @@ const Button = styled.button`
 
 const Slider = () => {
   const [slideIndex, setSlideIndex] = useState(0);
+  const [sliderItems, setSliderItems] = useState([]);
+
   const handleClick = (direction) => {
     if (direction === "left") {
       setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2);
     } else {
       setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0);
     }
-  };
+  };  
+
+  useEffect(() => {
+    fetch("http://localhost:7000/sliderItems")
+      .then((res) => res.json())
+      .then((data) => {
+        setSliderItems(data.result)
+      });
+  }, []);
 
   return (
     <Container>

@@ -1,7 +1,9 @@
 import {
   ShoppingCartOutlined,
 } from "@material-ui/icons";
+import { useContext } from "react";
 import styled from "styled-components";
+import { UserContext } from "../App";
 
 const Info = styled.div`
   opacity: 0;
@@ -65,13 +67,23 @@ const Icon = styled.div`
 `;
 
 const Product = ({ item }) => {
+  const {orderState} = useContext(UserContext);
+  const [orders, setOrders] = orderState;
+
+  const addToOrder=(key)=>{  
+    const order = {...orders};
+    order.count = order.count+1 || 1;
+    order[key]=order[key]+1 || 1;
+
+    setOrders(order);    
+  }
   return (
     <Container>
       <Circle />
       <Image src={item.img} />
       <Info>
         <Icon>
-          <ShoppingCartOutlined  onClick={()=>{console.log("clicked")}}/>
+          <ShoppingCartOutlined  onClick={()=>{addToOrder(item._id)}}/>
         </Icon>
       </Info>
     </Container>

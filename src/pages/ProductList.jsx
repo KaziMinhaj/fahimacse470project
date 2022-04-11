@@ -17,8 +17,8 @@ const ProductList = () => {
       <Navbar />
       <Announcement />
       <Title>Meals</Title>
-      <Products />
-      <Newsletter />
+      <Products/>
+     {/* <Newsletter /> */}
       <Footer />
     </Container>
   );

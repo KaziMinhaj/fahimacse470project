@@ -48,10 +48,10 @@ const CategoryItem = ({ item }) => {
     <Container>
       <Image src={item.img} />
       <Info>
-        <Title>{item.title}</Title>
-        <Button><Button>
+        {/* <Title>{item.title}</Title> */}
+        {/* <Button><Button>
                 <Link style={{textDecoration: "none", color:"black"}} to="/productlist">SHOP NOW</Link>
-              </Button></Button>
+              </Button></Button> */}
       </Info>
     </Container>
   );

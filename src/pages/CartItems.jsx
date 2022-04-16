@@ -196,7 +196,7 @@ const addToOrder=(key)=>{
                   <Remove  />
                   </button> */}
                 </ProductAmountContainer>
-                <ProductPrice>$ {item.price*amount}</ProductPrice>
+                <ProductPrice>{item.price*amount} tk</ProductPrice>
               </PriceDetail>
             </Product>
     </>

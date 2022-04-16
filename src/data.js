@@ -1,17 +1,17 @@
   export const categories = [
     {
       id: 1,
-      img: "https://png.pngtree.com/background/20210710/original/pngtree-delicious-pizza-sale-poster-template-picture-image_1054674.jpg",
-      title: "SHIRT STYLE!",
+      img: "https://www.themealdb.com/images/media/meals/1529444830.jpg",
+      title: "Beef Lo Mein",
     },
     {
       id: 2,
-      img: "https://png.pngtree.com/background/20210711/original/pngtree-chinese-food-speciality-barbecue-background-picture-image_1105362.jpg",
-      title: "LOUNGEWEAR LOVE",
+      img: "https://www.themealdb.com/images/media/meals/jcr46d1614763831.jpg",
+      title: "Thai Soup",
     },
     {
       id: 3,
-      img: "https://st4.depositphotos.com/15827116/31241/i/450/depositphotos_312414290-stock-photo-top-view-tasty-spicy-thai.jpg",
-      title: "LIGHT JACKETS",
+      img: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/opera-cake-royalty-free-image-1578350233.jpg?crop=0.665xw:1.00xh;0.253xw,0&resize=768:*",
+      title: "Opera Cake",
     },
   ];

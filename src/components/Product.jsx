@@ -1,9 +1,11 @@
 import {
-  ShoppingCartOutlined,
+  ShoppingCartOutlined, StarBorderOutlined
 } from "@material-ui/icons";
 import { useContext } from "react";
 import styled from "styled-components";
 import { UserContext } from "../App";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Info = styled.div`
   opacity: 0;
@@ -66,6 +68,24 @@ const Icon = styled.div`
   }
 `;
 
+const Title = styled.div`
+  
+  height:auto;
+  width: auto;
+  border-radius: 5px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  padding: 10px;
+  transition: all 0.5s ease;
+  &:hover {
+    background-color: #e9f5f5;
+    transform: scale(1.1);
+  }
+`;
+
 const Product = ({ item }) => {
   const {orderState} = useContext(UserContext);
   const [orders, setOrders] = orderState;
@@ -73,18 +93,41 @@ const Product = ({ item }) => {
   const addToOrder=(key)=>{  
     const order = {...orders};
     order.count = order.count+1 || 1;
-    order[key]=order[key]+1 || 1;
+    order[key]= order[key]+1 || 1;
 
-    setOrders(order);    
+    setOrders(order); 
+    notify(item)   
   }
+
+  const notify = (item) => toast(`${item.name} has been added`,{type: 'success'});
+
   return (
     <Container>
       <Circle />
       <Image src={item.img} />
       <Info>
+        <Title>
+          Name: {item.name}
+          <br></br>
+          Price: ${item.price}
+          <br></br>          
+        </Title>
+        
         <Icon>
-          <ShoppingCartOutlined  onClick={()=>{addToOrder(item._id)}}/>
+          <ShoppingCartOutlined  onClick={()=>{addToOrder(item._id,item)}}/>
         </Icon>
+        <ToastContainer
+                position="bottom-right"
+                autoClose={5000}
+                hideProgressBar={true}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+              />
       </Info>
     </Container>
   );

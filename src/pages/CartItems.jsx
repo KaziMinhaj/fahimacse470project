@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { Add, Remove } from "@material-ui/icons";
+import { UserContext } from "../App";
 
 const Container = styled.div``;
 
@@ -151,32 +152,51 @@ const Button = styled.button`
   font-weight: 600;
 `;
 
-const CartItems = () => {
+const CartItems = ({item, orderKeyValues}) => {
+  const {orderState} = useContext(UserContext);
+  const [orders, setOrders] = orderState;
+ 
+let  amount = 0;  
+orderKeyValues.map(p=> item._id==p[0]? amount = p[1] : null )
+
+const addToOrder=(key)=>{  
+  const order = {...orders};
+  order.count = order.count+1 || 1;
+  order[key]= order[key]+1 || 1;
+
+  setOrders(order);    
+}
+
   return (
     <>
       <Product>   
               <ProductDetail>
-                <Image src="https://i.pinimg.com/originals/2d/af/f8/2daff8e0823e51dd752704a47d5b795c.png" />
+                <Image src={item.img} />
                 <Details>
-                  <ProductName>
-                    <b>Product:</b> HAKURA T-SHIRT
-                  </ProductName>
                   <ProductId>
-                    <b>ID:</b> 93813718293
-                  </ProductId>
-                  <ProductColor color="gray" />
-                  <ProductSize>
-                    <b>Size:</b> M
-                  </ProductSize>
+                    <b>ID:</b> {item._id}
+                  </ProductId>                 
+                  <ProductName>
+                    <b>Product:</b> {item.name}
+                  </ProductName>
+                  <ProductPrice>
+                    <b>Price:</b>{item.price}
+                  </ProductPrice>
                 </Details>
               </ProductDetail>
               <PriceDetail>
                 <ProductAmountContainer>
-                  <Add />
-                  <ProductAmount>1</ProductAmount>
-                  <Remove />
+                {/* <button onClick={()=>{addToOrder(item._id)}} style={{background: "none", border:"none"}}>
+                  <Add  />
+                  </button> */}
+                  <ProductAmount>
+                   {amount}
+                    </ProductAmount>
+                  {/* <button  onClick={()=> console.log("clicked")} style={{background: "none", border:"none"}}>
+                  <Remove  />
+                  </button> */}
                 </ProductAmountContainer>
-                <ProductPrice>$ 20</ProductPrice>
+                <ProductPrice>$ {item.price*amount}</ProductPrice>
               </PriceDetail>
             </Product>
     </>

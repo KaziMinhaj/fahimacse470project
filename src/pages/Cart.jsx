@@ -1,5 +1,5 @@
 import { Add, Remove } from "@material-ui/icons";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { UserContext } from "../App";
 import Announcement from "../components/Announcement";
@@ -7,6 +7,11 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
 import CartItems from "./CartItems"
+import StripeCheckout from "react-stripe-checkout";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Container = styled.div``;
 
@@ -33,7 +38,7 @@ const TopButton = styled.button`
   cursor: pointer;
   border: ${(props) => props.type === "filled" && "none"};
   background-color: ${(props) =>
-    props.type === "filled" ? "black" : "transparent"};
+    props.type === "filled" ? "white" : "transparent"};
   color: ${(props) => props.type === "filled" && "white"};
 `;
 
@@ -151,35 +156,59 @@ const SummaryItemPrice = styled.span``;
 const Button = styled.button`
   width: 100%;
   padding: 10px;
-  background-color: black;
+  background-color: white;
   color: white;
   font-weight: 600;
+  border: none
 `;
 
 const Cart = () => {
 
+  const [selectedItems, setSelectedItems] = useState([])
   const {orderState} = useContext(UserContext);
   const [orders, setOrders] = orderState;
-  const orderIds = Object.keys(orders)
-  console.log(orderIds)
+  const [orderKeyValues, setorderKeyValues] = useState(null)
+
+  const handleToken=(token, addresses)=>{
+    console.log({token, addresses})
+    notify();
+  }
+  const notify = () => toast("Success! check your email for digital recipt !",{type: 'success'});
+
+  const loadItems = async () => {
+    const orderArr = Object.entries(orders)
+    setorderKeyValues(orderArr)
+    orderArr.forEach(async (element) => {
+      if(element[0] != "count"){
+        const {data} = await axios.get(`//localhost:7000/items/${element[0]}`)
+        setSelectedItems((prev)=>{
+          return [...prev, data.result[0] ]
+        })
+      }   
+    });  
+  }
+
+  //data loading
+  useEffect( ()=>{    
+    loadItems()
+  },[])
 
   return (
     <Container>
       <Navbar />
       <Announcement />
       <Wrapper>
-        <Title>YOUR BAG</Title>
+        <Title>YOUR SELECTED ITEMS</Title>
         <Top>
-          <TopButton>CONTINUE SHOPPING</TopButton>
-          <TopTexts>
-            <TopText>Shopping Bag(2)</TopText>
-            <TopText>Your Wishlist (0)</TopText>
-          </TopTexts>
-          <TopButton type="filled">CHECKOUT NOW</TopButton>
+          <TopButton>
+            <Link style={{textDecoration: "none", color:"black"}} to="/productlist">CONTINUE SHOPPING</Link>
+            </TopButton>          
         </Top>
         <Bottom>
           <Info>
-           <CartItems></CartItems>            
+            {
+              selectedItems.length == 0 ? "no item selected" : selectedItems.map((item)=> <CartItems orderKeyValues={orderKeyValues} item={item} key={item._id}/>)
+            }                    
           </Info>
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
@@ -199,7 +228,25 @@ const Cart = () => {
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>$ 80</SummaryItemPrice>
             </SummaryItem>
-            <Button>CHECKOUT NOW</Button>
+            <Button>
+              <StripeCheckout
+                stripeKey="pk_test_51Kp4RIJ9qu66IGFAvajolEJbohc2zM1eMMzUKE58WAlcNl1c79TXPqBIsDCLsfURqf9wOYByd9Nz10RwXNbxE17o008n31UAy1"
+                token={handleToken}
+                style={{width:"100%"}}
+              />
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+              />
+            </Button>
           </Summary>
         </Bottom>
       </Wrapper>
